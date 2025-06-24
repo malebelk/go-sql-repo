@@ -87,7 +87,7 @@ func (f SqlFile) GetNameWithoutSQLSuffix() string {
 }
 
 func (f SqlFile) GenerateEmbedSql() string {
-	return fmt.Sprintf("//go:embed %s\nvar %s string\nfunc %s%s() string {\n\treturn %s\n}\n\n", f.GetRelativePath(), f.GetNameWithoutSQLSuffix(), f.Prefix, f.GetNameWithoutSQLSuffix(), f.GetNameWithoutSQLSuffix())
+	return fmt.Sprintf("//go:embed %s\nvar %s string\nfunc (r Repository) %s%s() string {\n\treturn %s\n}\n\n", f.GetRelativePath(), f.GetNameWithoutSQLSuffix(), f.Prefix, f.GetNameWithoutSQLSuffix(), f.GetNameWithoutSQLSuffix())
 }
 
 func (f SqlFile) GetRelativePath() string {
