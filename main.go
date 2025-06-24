@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,15 +21,14 @@ func main() {
 	if goFile == "" {
 		panic("GOPACKAGE environment variable not set")
 	}
-	outputFile, err := os.Open(wd + string(os.PathSeparator) + "repo.sql")
-	if err != nil {
-		panic(err)
-	}
-	defer outputFile.Close()
 
 	files := getSqlFileNames(wd + string(os.PathSeparator) + "sql")
 	repo := NewRepoFile(packageName, "GetQuery", "sql", files)
-	fmt.Printf(repo.Generate())
+
+	err = os.WriteFile(wd+string(os.PathSeparator)+"repo.go", []byte(repo.Generate()), 0644)
+	if err != nil {
+		log.Fatalf("write file error: %v", err)
+	}
 }
 
 func getSqlFileNames(path string) []string {
